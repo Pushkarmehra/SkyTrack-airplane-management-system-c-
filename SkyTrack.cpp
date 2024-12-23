@@ -3,8 +3,8 @@
 #include <string.h>
 #define FILENAME "flights.dat"
 using namespace std;
-struct{
-char flightNumber[10];
+struct Flight {
+    char flightNumber[10];
     char departureCity[30];
     char destinationCity[30];
     char departureDateTime[20];
@@ -13,7 +13,7 @@ char flightNumber[10];
     int firstClassSold;
     int coachAvailable;
     int coachSold;
-} Flight;
+} ;
 void createFlightRecord();
 void deleteFlightRecord(const char *flightNumber);
 void updateFlightRecord(const char *flightNumber);
@@ -80,4 +80,32 @@ int main() {
         }
     } while (choice != 0);
     return 0;
+}
+void createFlightRecord() {
+    FILE *file = fopen(FILENAME, "ab");
+    if (!file) {
+        perror("Error opening file");
+        return;
+    }
+
+    struct Flight flight;
+    cout<<"Enter Flight Number: ";
+    cin>>flight.flightNumber;
+    cout<<"Enter Departure City: ";
+    cin>>flight.departureCity;
+    cout<<"Enter Destination City: ";
+    cin>>flight.destinationCity;
+    cout<<"Enter Departure Date and Time: ";
+    cin>>flight.departureDateTime;
+    cout<<"Enter Arrival Date and Time: ";
+    cin>>flight.arrivalDateTime;
+    cout<<"Enter First Class Seats Available: ";
+    cin>>flight.firstClassAvailable;
+    flight.firstClassSold = 0;
+    cout<<"Enter Coach Seats Available: ";
+    cin>>flight.coachAvailable;
+    flight.coachSold = 0;
+    fwrite(&flight, sizeof(Flight), 1, file);
+    fclose(file);
+    cout<<"Flight record created successfully."<<endl;
 }
